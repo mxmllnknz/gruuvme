@@ -14,9 +14,14 @@ class MyLogger(object):
 
 
 ydl_opts = {
+    'logger': MyLogger(),
     'format': 'm4a/bestaudio/best',
-    'concurrent-fragments': '4',
+    'concurrent-fragments': '6',
     'hls-use-mpegts': 'true',
+    # We use this custom downloader because the native downloader is 6x slower and throttles for some reason
+    'external_downloader': {
+        'default': 'aria2c'
+        },
     # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
     'postprocessors': [{  # Extract audio using ffmpeg
         'key': 'FFmpegExtractAudio',
@@ -26,6 +31,5 @@ ydl_opts = {
 
 
 async def download_video(url):
-    url = 'https://www.youtube.com/watch?v=kTyP0-Zaz0I&ab_channel=WeAreScientists'
     with ytdl.YoutubeDL(ydl_opts) as ytd:
         ytd.download([url])
