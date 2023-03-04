@@ -65,7 +65,7 @@ async def play(ctx, url=""):
             voice_channel.resume()
             return
         else:
-            ctx.send("Nothing is currently in queue.")
+            await ctx.send("Nothing is currently in queue.")
         return   
     
     if 'spotify' in ctx.message.content:
