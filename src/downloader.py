@@ -18,6 +18,9 @@ ydl_opts = {
     'format': 'm4a/bestaudio/best',
     'concurrent-fragments': '6',
     'hls-use-mpegts': 'true',
+    'paths': {
+      'home': './tracks'  
+    },
     # We use this custom downloader because the native downloader is 6x slower and throttles for some reason
     'external_downloader': {
         'default': 'aria2c'
