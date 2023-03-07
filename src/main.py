@@ -67,11 +67,13 @@ async def play(ctx, url=""):
         else:
             await ctx.send("Nothing is currently in queue.")
         return   
-    
     if 'spotify' in ctx.message.content:
         track = await fetchSpotifyTrack(url)
-        await downloader.download_video(track.url)
-        filename = f'./tracks/{track.title} [{track.vid}].m4a'
+    elif 'https://www.youtube.com' in ctx.message.content:
+        track = Track(ctx.message.content.split(" ")[1], 'youtube')
+    await downloader.download_video(track.url)
+    filename = f'./tracks/{track.title} [{track.vid}].m4a'
+    
     
     voice_channel.play(discord.FFmpegPCMAudio(source=filename))
     
