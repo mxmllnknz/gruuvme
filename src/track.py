@@ -1,11 +1,13 @@
 from youtube_search import YoutubeSearch
 import requests
 import json
+import downloader
 
 class Track:
     def __init__(self, query, source='unspecified'):
         self.query = query
         self.source = source
+        self.path = ''
         video_details = self.search()
 
         
@@ -23,8 +25,16 @@ class Track:
             return YoutubeSearch(self.query, max_results=1).to_dict()[0]
         elif self.source == 'youtube':
             return self._parse_html(requests.get(self.query).text)
+        
+    async def download(self) -> None:
+        await downloader.download_video(self.url)
+        self.path = f'./tracks/{self.title} [{self.vid}].m4a'
 
     def _parse_html(self, response):
+        '''
+            This helper is specific to extracting important Track fields from a basic URL request to Youtube.com
+            It's gross and I'm sure there must be a better way to get this info
+        '''
         start = (
             response.index("ytInitialData")
             + len("ytInitialData")
